@@ -37,6 +37,13 @@ public class ClienteResource {
 		return ResponseEntity.ok().body(obj);
 	}
 	
+	@RequestMapping(value="/id", method=RequestMethod.GET)
+	public ResponseEntity<Cliente> findID(@PathVariable String id) {
+		Integer id2 = Integer.parseInt(id);
+		Cliente obj = service.find(id2);
+		return ResponseEntity.ok().body(obj);
+	}
+	
 	@RequestMapping(value="/email", method=RequestMethod.GET)
 	public ResponseEntity<Cliente> find(@RequestParam(value="value") String email) {
 		Cliente obj = service.findByEmail(email);
@@ -60,7 +67,7 @@ public class ClienteResource {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+	
 	@RequestMapping(value="/{id}", method=RequestMethod.DELETE)
 	public ResponseEntity<Void> delete(@PathVariable Integer id) {
 		service.delete(id);

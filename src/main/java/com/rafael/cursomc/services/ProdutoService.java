@@ -31,10 +31,26 @@ public class ProdutoService {
 		}
 		return obj;
 	}
+	
+	public List<Produto> findNome(String nome) {
+		List<Produto> list = repo.findNome(nome);
+		
+		if(list == null) {
+			throw new ObjectNotFoundException("Produtos com este nome não encontrados, \n Tipo: " + Produto.class.getName());
+		}
+		
+		return list;
+	} 
+	
 
 	public Page<Produto> search(String nome, List<Integer> ids, Integer page, Integer linesPerPage, String orderBy, String direction) {
 		PageRequest pageRequest = new PageRequest(page, linesPerPage, Direction.valueOf(direction), orderBy);
 		List<Categoria> categorias = categoriaRepository.findAll(ids);
 		return repo.findDistinctByNomeContainingAndCategoriasIn(nome, categorias, pageRequest);	
+	}
+	
+	public Page<Produto> search(String nome, Integer page, Integer linesPerPage, String orderBy, String direction) {
+		PageRequest pageRequest = new PageRequest(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		return repo.findDistinctByNomeContaining(nome, pageRequest);	
 	}
 }

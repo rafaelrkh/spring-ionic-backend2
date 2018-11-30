@@ -3,8 +3,10 @@ package com.rafael.cursomc.domain;
 import java.io.Serializable;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 
@@ -19,6 +21,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Pedido implements Serializable {
@@ -37,6 +40,10 @@ public class Pedido implements Serializable {
 	@ManyToOne
 	@JoinColumn(name="cliente_id")
 	private Cliente cliente;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy="pedidoN")
+	private List<NotaFiscal> notaFiscal = new ArrayList<>();	 
 	
 	@ManyToOne
 	@JoinColumn(name="endereco_de_entrega_id")
@@ -143,6 +150,7 @@ public class Pedido implements Serializable {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy hh:mm:ss");
 		StringBuilder builder = new StringBuilder();
 		builder.append("Pedido número: ");
+		builder.append(getId() + " | NOTA FISCAL: ");
 		builder.append(getId());
 		builder.append(", Instante: ");
 		builder.append(sdf.format(getInstante()));

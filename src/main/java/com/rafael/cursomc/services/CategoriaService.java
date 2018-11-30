@@ -67,4 +67,9 @@ public class CategoriaService {
 	private void updateData(Categoria newObj, Categoria obj) {
 		newObj.setNome(obj.getNome());
 	}
+	
+	public Page<Categoria> search(String nome, Integer page, Integer linesPerPage, String orderBy, String direction) {
+		PageRequest pageRequest = new PageRequest(page, linesPerPage, Direction.valueOf(direction), orderBy);
+		return repo.findDistinctByNomeContaining(nome, pageRequest);	
+	}
 }
